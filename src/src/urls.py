@@ -20,7 +20,6 @@ from api import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('api/', include('api.urls')),
-    path('api/productos/', views.productos_list),
-     path('api/productos/<int:pk>', views.productos_detail),
+    path('api/', include('api.urls')),
+    
 ]
