@@ -49,7 +49,7 @@ class ProductosDetail(APIView):
         if request.method == 'GET':
             serializer = ProductosSerializer(producto, context={'request': request})
             return Response(serializer.data)
-    def put(self,request,pk=None):
+    def put(self,request,pk):
         try:
             producto = Productos.objects.get(pk=pk)
         except Productos.DoesNotExist:
@@ -61,7 +61,7 @@ class ProductosDetail(APIView):
                 serializer.save()
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    def delete(self,request,pk=None): 
+    def delete(self,request,pk): 
         try:
             producto = Productos.objects.get(pk=pk)
         except Productos.DoesNotExist:
