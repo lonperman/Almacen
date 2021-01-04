@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
+    'ckeditor',
     #Mis Apps
     'api',
 ]
@@ -113,6 +114,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 5
 }
 
+AUTH_USER_MODEL = 'api.User'
 
 CORS_ORIGIN_ALLOW_ALL = False
 

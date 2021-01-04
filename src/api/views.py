@@ -2,28 +2,51 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
+from django.views.generic import CreateView
 from django.views.generic.edit import FormView
 from django.contrib.auth import login,logout,authenticate
 from django.http import HttpResponseRedirect
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from rest_framework import generics
+from rest_framework import generics, viewsets
+from rest_framework.decorators import action
 from rest_framework.views import APIView, Response, status
-from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
-from .models import Productos, Persona
-from .serializers import ProductosSerializer, PersonaSerializer
+#from rest_framework.authtoken.models import Token
+#from rest_framework.permissions import IsAuthenticated
+#from rest_framework.authentication import TokenAuthentication
+from .models import Productos, Persona, User
+from .serializers import ProductosSerializer, PersonaSerializer, UserLoginSerializer, UserModelSerializer
+
+#Registar Persona
+class UserViewSet(viewsets.GenericViewSet):
+
+    queryset = User.objects.filter(is_active=True)
+    serializer_class = UserModelSerializer
+
+    # Detail define si es una petición de detalle o no, en methods añadimos el método permitido, en nuestro caso solo vamos a permitir post
+    @action(detail=False, methods=['post'])
+    def login(self, request):
+        """User sign in"""
+        serializer = UserLoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user, token = serializer.save()
+        data = {
+            'user': UserModelSerializer(user).data,
+            'access_token': token
+        }
+
+        return Response(data, status=status.HTTP_201_CREATED)
 
 #Personas
 class PersonaList(generics.ListCreateAPIView):
     queryset = Persona.objects.all()
     serializer_class = PersonaSerializer
-    permission_classes = (IsAuthenticated,)
-    authentication_class = (TokenAuthentication,)
+   # permission_classes = (IsAuthenticated,)
+    #authentication_class = (TokenAuthentication,)
 
 #Login
-class Login(FormView):
+""" class Login(FormView):
     template_name = "login.html"
     form_class = AuthenticationForm
     success_url = reverse_lazy('api:persona_list')
@@ -49,7 +72,7 @@ class Logout(APIView):
         request.user.auth_token.delete()
         logout(request)
         return Response(status= status.HTTP_200_OK)
-
+ """
 class ProductosView(APIView):
     #Api productos
     def get(self, request, format=None):
