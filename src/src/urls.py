@@ -22,13 +22,9 @@ from rest_framework.authtoken import views
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include(('api.urls','api'),namespace='api')),
-    
 
-    #path('api_generate_token/', views.obtain_auth_token),
-   
-    #path('login/', Login.as_view(), name= 'login'),
-    #path('logout/', Logout.as_view(), name= 'logout'),
+    path('api_generate_token/', views.obtain_auth_token),
+    path('login/', views.Login.as_view(), name= 'login'),
+    path('logout/', Logout.as_view(), name= 'logout'),
     
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
