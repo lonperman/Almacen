@@ -2,12 +2,15 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
+from django.views.generic import CreateView
 from django.views.generic.edit import FormView
 from django.contrib.auth import login,logout,authenticate
 from django.http import HttpResponseRedirect
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from rest_framework import generics
+from rest_framework import generics, viewsets
+from rest_framework.decorators import action
 from rest_framework.views import APIView, Response, status
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
@@ -19,12 +22,12 @@ from .serializers import ProductosSerializer, Usuarios
 class PersonaList(generics.ListCreateAPIView):
     queryset = Usuarios.objects.all()
     serializer_class = PersonaSerializer
-    #permission_classes = (IsAuthenticated,)
+   # permission_classes = (IsAuthenticated,)
     #authentication_class = (TokenAuthentication,)
 
-#Login """
-""" class Login(FormView):
-    #template_name = "login.html"
+#Login
+class Login(FormView):
+    
     form_class = AuthenticationForm
     success_url = reverse_lazy('api:persona_list')
 
@@ -118,7 +121,6 @@ class ProductosDetail(APIView):
             producto.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-
 class ProductosCompra(generics.ListAPIView):
 
     def get(self, request, format=None):
@@ -143,3 +145,4 @@ class ProductosCompra(generics.ListAPIView):
                 
             return Response({'data': serializer.data , 'count': paginator.count, 'numpages' : paginator.num_pages, 'nextlink': '/api/productosCompra/?page=' + str(nextPage), 'prevlink': '/api/productosCompra/?page=' + str(previousPage)})
     
+   
