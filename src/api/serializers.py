@@ -1,56 +1,45 @@
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
-from django.contrib.auth import password_validation, authenticate
-from .models import Productos, Persona,Cliente,User
+from .models import Productos, Usuarios,Cliente,Categoria,Proveedor,Venta,Credito
 
 
-class UserModelSerializer(serializers.ModelSerializer):
-
-    class Meta:
-
-        model = User
-        fields = (
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-        )
-
-class UserLoginSerializer(serializers.ModelSerializer):
-
-    #campos requeridos
-    email = serializers.EmailField()
-    password = serializers.CharField(min_length=8, max_length=64)
-
-    #Validamos los datos
-    def validate(self, data):
-        # authenticate recibe las credenciales, si son válidas devuelve el objeto del usuario
-        user = authenticate(username=data['email'], password=data['password'])
-        if not user:
-            raise serializers.ValidationError('Las credenciales no son validas')
-
-        # Guardamos el usuario en el contexto para posteriormente en create recuperar el token
-        self.context['user'] = user
-        return data
-
-    def create(self, data):
-        """Generar o recuperar token."""
-        token, created = Token.objects.get_or_create(user=self.context['user'])
-        return self.context['user'], token.key
-
-class PersonaSerializer(serializers.ModelSerializer):
+class UsuariosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Persona
-        fields = ('id','nombre','apellido')
+        fields = ('id_persona','nombre_persona','password_persona','rol_usuario')
+
+class CategoriaSerializer(serializer.ModelSerializer):
+    class Meta:
+        model = Categoria
+        fields = ('id_categoria','nombre_categoria','codigo_categoria')
+
+class ProveedorSerializer(serializer.ModelSerializer):
+    class Meta:
+        model = Proveedor
+        fields = ('id_proveedor','nombre_proveedor','cantidad_articulos','precio_producto')
 
 class ProductosSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Productos
-        fields = ('pk','codigo','name','categoria','estado','cantidad','precio_uni','descripcion')
+        fields = ('id_producto','nombre_producto',
+                'codigo','id_proveedor','estado_producto',
+                'cantidad_producto','precio_producto','imagen_producto')
 
-class ClienteSerializer(serializers.ModelSerializer):
+class ClientesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cliente
-        fields = ('documento','nombre','productos')
+        fields = ('id_cliente','nombre_cliente','cedula_cliente',
+                'estado_cliente','telefono_cliente')
+
+class VentaSerializer(serializer.ModelSerializer):
+    
+    class Meta:
+        model = Venta
+        fields = ('id_venta','id_producto','id_cliente','id_usuario','monto_venta')
+
+class CreditoSerializer(serializer.ModelSerializer):
+
+    class Meta:
+        model = Credito
+        fields = ('id_credito','id_producto','id_cliente','saldo_pendiente')

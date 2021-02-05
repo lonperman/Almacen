@@ -114,7 +114,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 5
 }
 
-AUTH_USER_MODEL = 'api.User'
 
 CORS_ORIGIN_ALLOW_ALL = False
 

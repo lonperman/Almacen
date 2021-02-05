@@ -4,8 +4,5 @@ from api import models
 
 # Register your models here.
 
-admin.site.register(models.Persona)
+admin.site.register(models.Usuarios)
 admin.site.register(models.Productos)
-admin.site.register(models.Cliente)
-admin.site.register(models.Credito)
-

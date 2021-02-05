@@ -1,108 +1,141 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-from ckeditor.fields import RichTextField
 
-#Registrar User
-""" class Usuarios(models.Model):
- 
-   
-   email_user = models.EmailField(max_length=100)
-   nombre_user = models.CharField(max_length=100)
-   password = models.CharField(max_length=100)
-   
-    def __str__(self):
-    return self.email
+#Usuarios
+class Usuarios(models.Model):
+    id_persona = models.AutoField(primary_key= True)
+    nombre_persona = models.CharField('Nombre', max_length=100)
+    password_persona = models.CharField(max_length=10)
 
- """
+    LOAN_STATUS = (
+        ('A','admin'),
+        ('O','operador')
+    )
 
-class User(AbstractUser):
-    email = models.EmailField('email address', unique=True)
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    rol_usuario =  models.CharField(max_length=100,choices=LOAN_STATUS,blank=True, default='O')
+    createdAt = models.DateTimeField(auto_now_add=True)
 
-    modified = models.DateTimeField(auto_now=True)
-    extract = RichTextField(null=True)
-    phone = models.CharField(null=True, max_length=15)
-    city = models.CharField(null=True, max_length=255)
-    country = models.CharField(null=True, max_length=255)
-    is_recruiter = models.BooleanField(default=False)
+    class Meta:
+        ordering = ["id_persona"]
 
-#Login
-class Persona(models.Model):
-    id = models.AutoField(primary_key= True)
-    nombre = models.CharField('Nombre', max_length=100)
-    apellido = models.CharField('Apellido', max_length=200)
 
     def __str__(self):
-        return '{0},{1}'.format(self.apellido,self.nombre)
+        return '{0},{1}'.format(self.apellido_persona,self.nombre_persona)
+
+#Categoria
+class Categoria(models.Model):
+    id_categoria = models.CharField(max_length=10)
+    nombre_categoria = models.CharField(max_length=10)
+    codigo_categoria = models.CharField(primary_key=True,max_length=10)
+    createdAt = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["id_categoria"]
+
+    #Metodos
+    def __str__(self):
+        return self.nombre_categoria
+
+
+#Proveedor
+class Proveedor(models.Model):
+    id_proveedor = models.AutoField(primary_key=True)
+    nombre_proveedor = models.CharField(max_length=100)
+    cantidad_articulos = models.IntegerField()
+    precio_producto = models.IntegerField() 
+    createdAt = models.DateTimeField(auto_now_add=True)
+
+    
+    class Meta:
+        ordering = ["id_proveedor"]
+
+    #Metodos
+    def __str__(self):
+        return self.nombre_proveedor
+
 
 #Producto
 class Productos(models.Model):
     #Crear el modelo para los productos
-    codigo = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
-
+    id_producto = models.AutoField(primary_key=True)
+    nombre_producto = models.CharField(max_length=100)
     LOAN_STATUS = (
         ('C','Compra'),
         ('V','Venta'),
         ('P','Pendiente'),
     )
 
-    categoria = models.CharField(max_length=100)
-    estado = models.CharField(max_length=100,choices=LOAN_STATUS,blank=True, default='C')
-    cantidad = models.IntegerField()
-    precio_uni = models.IntegerField()
-    descripcion = models.TextField(blank=True, null=True)
+    codigo =  models.ForeignKey(Categoria,on_delete=models.CASCADE)
+    id_proveedor = models.ForeignKey(Proveedor,on_delete=models.CASCADE)
+    estado_producto = models.CharField(max_length=100,choices=LOAN_STATUS,blank=True, default='C')
+    cantidad_producto = models.IntegerField()
+    precio_producto = models.IntegerField()
+    imagen_producto = models.ImageField()
     createdAt = models.DateTimeField(auto_now_add=True)
 
     #Metada
     class Meta:
-        ordering = ["name"]
+        ordering = ["id_producto"]
 
     #Metodos
     def __str__(self):
-        return self.name
+        return self.nombre_producto
 
 
 #Cliente
 class Cliente(models.Model):
-    documento = models.CharField(max_length=100,null=False)
-    nombre = models.CharField(max_length=100,null=False)
+    id_cliente = models.AutoField(primary_key=True)
+    nombre_cliente = models.CharField(max_length=100,null=False)
+    cedula_cliente = models.CharField(unique=True,max_length=100,null=False)
+
+    LOAN_STATUS = (
+        ('N','Nuevo'),
+        ('A','Antiguo'),
+    )
+
+    estado_cliente =  models.CharField(max_length=100,choices=LOAN_STATUS,blank=True, default='N')
+    telefono_cliente = models.CharField(max_length=10)
     createdAt = models.DateTimeField(auto_now_add=True)
 
  #Metada
     class Meta:
-        ordering = ["nombre"]
+        ordering = ["id_cliente"]
     
     def __str__(self):
-        return self.nombre
+        return self.nombre_cliente
 
 #Venta
 class Venta(models.Model):
-    productos_venta = models.ForeignKey(Productos,on_delete=models.CASCADE)
+    id_venta = models.AutoField(primary_key=True)
+    id_producto = models.ForeignKey(Productos,on_delete=models.CASCADE)
+    id_cliente = models.ForeignKey(Cliente,on_delete=models.CASCADE)
+    id_usuario = models.ForeignKey(Usuarios,on_delete=models.CASCADE)
+    monto_venta = models.IntegerField()
     createdAt = models.DateTimeField(auto_now_add=True)
 
+
+    #Metada
+    class Meta:
+        ordering = ["id_venta"]
+
     def __str__(self):
-        return self.productos_venta.name
+        return self.id_cliente.nombre_cliente
 
     
 #Credito
 class Credito(models.Model):
-    productos_credito = models.ForeignKey(Productos,on_delete=models.CASCADE)
-    cliente = models.ForeignKey(Cliente,on_delete=models.CASCADE)
+    id_credito = models.AutoField(primary_key=True)
+    id_producto = models.ForeignKey(Productos,on_delete=models.CASCADE)
+    id_cliente = models.ForeignKey(Cliente,on_delete=models.CASCADE)
     saldo_pendiente = models.IntegerField() 
     createdAt = models.DateTimeField(auto_now_add=True)
 
+
+     #Metada
+    class Meta:
+        ordering = ["id_cliente"]
+
     def __str__(self):
-        return self.productos_credito.name
-
-
-#Proveedor
-class Proveedor(models.Model):
-    nombre_proveedor = models.CharField(max_length=100)
-    nombre_negocio = models.CharField(max_length=100)
-    articulo = models.CharField(max_length=100)
-    cantidad_articulos = models.IntegerField()
+        return self.id_cliente
 
 
 

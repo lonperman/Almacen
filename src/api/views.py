@@ -12,18 +12,15 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
 from rest_framework.views import APIView, Response, status
-#from rest_framework.authtoken.models import Token
-#from rest_framework.permissions import IsAuthenticated
-#from rest_framework.authentication import TokenAuthentication
-from .models import Productos, Persona, User
-from .serializers import ProductosSerializer, PersonaSerializer, UserLoginSerializer, UserModelSerializer
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from .models import Productos, Usuarios
+from .serializers import ProductosSerializer, Usuarios
 
-#Registar Persona
-
-
-#Personas
+""" #Personas
 class PersonaList(generics.ListCreateAPIView):
-    queryset = Persona.objects.all()
+    queryset = Usuarios.objects.all()
     serializer_class = PersonaSerializer
    # permission_classes = (IsAuthenticated,)
     #authentication_class = (TokenAuthentication,)
@@ -49,7 +46,7 @@ class Login(FormView):
             login(self.request, form.get_user())
             return super(Login,self).form_valid(form)
 
-
+ """
 class Logout(APIView):
     def get(self,request,format=None):
         request.user.auth_token.delete()
