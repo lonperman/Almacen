@@ -12,19 +12,19 @@ from rest_framework.views import APIView, Response, status
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
-from .models import Productos, Persona
-from .serializers import ProductosSerializer, PersonaSerializer
+from .models import Productos, Usuarios
+from .serializers import ProductosSerializer, Usuarios
 
-#Personas
+""" #Personas
 class PersonaList(generics.ListCreateAPIView):
-    queryset = Persona.objects.all()
+    queryset = Usuarios.objects.all()
     serializer_class = PersonaSerializer
-    permission_classes = (IsAuthenticated,)
-    authentication_class = (TokenAuthentication,)
+    #permission_classes = (IsAuthenticated,)
+    #authentication_class = (TokenAuthentication,)
 
-#Login
-class Login(FormView):
-    template_name = "login.html"
+#Login """
+""" class Login(FormView):
+    #template_name = "login.html"
     form_class = AuthenticationForm
     success_url = reverse_lazy('api:persona_list')
 
@@ -43,7 +43,7 @@ class Login(FormView):
             login(self.request, form.get_user())
             return super(Login,self).form_valid(form)
 
-
+ """
 class Logout(APIView):
     def get(self,request,format=None):
         request.user.auth_token.delete()
@@ -117,3 +117,29 @@ class ProductosDetail(APIView):
         if request.method == 'DELETE':
             producto.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProductosCompra(generics.ListAPIView):
+
+    def get(self, request, format=None):
+        if request.method == 'GET':
+            data = []
+            nextPage = 1
+            previousPage = 1
+            productoscompra = Productos.objects.filter(estado="Compra")
+            page = request.GET.get('page',1)
+            paginator = Paginator(productoscompra,5)
+            try:
+                data = paginator.page(page)
+            except PageNotAnInteger:
+                data = paginator.page(1)
+            except EmptyPage:
+                data = paginator.page(paginator.num_pages)
+            serializer = ProductosSerializer(data,context={'request': request} ,many=True)
+            if data.has_next():
+                nextPage = data.next_page_number()
+            if data.has_previous():
+                previousPage = data.previous_page_number()
+                
+            return Response({'data': serializer.data , 'count': paginator.count, 'numpages' : paginator.num_pages, 'nextlink': '/api/productosCompra/?page=' + str(nextPage), 'prevlink': '/api/productosCompra/?page=' + str(previousPage)})
+    
