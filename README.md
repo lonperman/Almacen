@@ -16,3 +16,12 @@ py manage.py migrate
 ```
 # Base de datos
 Por defecto que utiliza django.
+
+# Crear una rama 
+Para evitar conflitos en la rama master crear rama con nombre
+1. Para crear rama
+2. Para ingresar a la rama
+```sh
+git branch [nombre]
+got checkout [nombre-rama]
+```
