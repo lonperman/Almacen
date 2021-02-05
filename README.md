@@ -14,5 +14,5 @@ py manage.py runserver
 py manage.py makemigrations
 py manage.py migrate
 ```
-#Base de datos
+# Base de datos
 Por defecto que utiliza django.
