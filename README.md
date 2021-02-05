@@ -7,9 +7,12 @@ Back-end de aplicación web, que gestiona el inventario de un pequeño negocio, 
 py manage.py runserver
 ```
 
-# Para crear nuevas migraciones si agregas nuevos modelos usa el comando
+# Para crear nuevas migraciones 
+ en el caso de que agreges nuevos modelos usa el comando.
 
 ```sh
 py manage.py makemigrations
 py manage.py migrate
 ```
+#Base de datos
+Por defecto que utiliza django.
