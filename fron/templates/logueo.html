@@ -1,0 +1,25 @@
+{% extends "padre.html" %}
+
+{% block title %}
+
+ <title>Bienvenidos A Cacharrerias 4NDR3S</title>
+
+ {% endblock %}
+
+ {% block content%}
+
+ <br>
+ <div align="center"> <img src="https://www.flaticon.com/svg/static/icons/svg/929/929564.svg" alt="usuario" width="400" height="400">  
+ <br>
+ <br>
+ <input type="email" name="Usuario"> <P style="color: white;">Usuario</P>
+ <br>
+ <br>
+ <input type="password" name="Contraseña"> <P style="color: white;">Contraseña</P>
+ <br>
+ <br>
+
+ <form action="/ingreso/" method="GET">
+ <input style="background-color: rgb(20, 20, 20);color: white;" type="submit" value="Ingresar" ></div>
+
+ {% endblock %}

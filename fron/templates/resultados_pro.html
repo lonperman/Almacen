@@ -1,0 +1,36 @@
+{% extends "padre.html" %}
+
+{% block title %}
+   
+  <title>Busqueda Producto</title>  
+  
+{% endblock %}
+
+{% block content %}
+ <br>
+<p style="color: white;">Estas Buscando : <strong>{{query}}</strong></p>    
+
+{% if articulos %}
+
+   <p style="color: white;">Articulos Encontrados : {{articulos|length}} articulos </p> 
+  
+   <ul>
+
+     {% for articulos in articulos%}
+
+     <li style="color: white;">
+
+       <strong>{{articulos.nombre_producto}}&nbsp;{{articulos.precio_producto}}&nbsp;{{articulos.codigo}}&nbsp;{{articulos.cantidad_producto}}</strong>
+
+     </li>
+
+     {% endfor %}
+   </ul>
+
+{% else %}
+   
+<P style="color: white;">No Existe el Articulo </P>
+
+{% endif %}
+
+{% endblock %}
