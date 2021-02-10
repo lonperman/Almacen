@@ -19,7 +19,7 @@ class Usuarios(models.Model):
 
 
     def __str__(self):
-        return '{0},{1}'.format(self.apellido_persona,self.nombre_persona)
+        return self.nombre_persona
 
 #Categoria
 class Categoria(models.Model):
@@ -29,7 +29,7 @@ class Categoria(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["id_categoria"]
+        ordering = ["nombre_categoria"]
 
     #Metodos
     def __str__(self):
