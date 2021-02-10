@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'ckeditor',
     #Mis Apps
     'api',
+    'fron',
 ]
 
 MIDDLEWARE = [

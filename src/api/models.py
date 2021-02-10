@@ -14,6 +14,7 @@ class Usuarios(models.Model):
     rol_usuario =  models.CharField(max_length=100,choices=LOAN_STATUS,blank=True, default='O')
     createdAt = models.DateTimeField(auto_now_add=True)
 
+
     class Meta:
         ordering = ["id_persona"]
 
@@ -27,6 +28,8 @@ class Categoria(models.Model):
     nombre_categoria = models.CharField(max_length=10)
     codigo_categoria = models.CharField(primary_key=True,max_length=10)
     createdAt = models.DateTimeField(auto_now_add=True)
+
+
 
     class Meta:
         ordering = ["nombre_categoria"]
@@ -43,6 +46,7 @@ class Proveedor(models.Model):
     cantidad_articulos = models.IntegerField()
     precio_producto = models.IntegerField() 
     createdAt = models.DateTimeField(auto_now_add=True)
+
 
     
     class Meta:
