@@ -18,14 +18,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from api import views
-from rest_framework.authtoken import views
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(('api.urls','api'))),
-   # path('login/', Login.as_view(), name= 'login'),
+    path('login/', views.LoginView.as_view()),
    # path('logout/', Logout.as_view(), name= 'logout'),
     
 ]

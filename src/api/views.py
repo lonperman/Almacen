@@ -1,55 +1,95 @@
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
 from django.views.generic import CreateView
-from django.views.generic.edit import FormView
-from django.contrib.auth import login,logout,authenticate
-from django.http import HttpResponseRedirect
-from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from rest_framework import generics, viewsets
-from rest_framework.decorators import action
+from rest_framework import generics
 from rest_framework.views import APIView, Response, status
 from .models import Productos, Usuarios,Categoria,Proveedor,Cliente,Venta,Credito
-from .serializers import CategoriaSerializer,ProveedorSerializer,ClientesSerializer,VentaSerializer,CreditoSerializer,ProductosSerializer
+from .serializers import CategoriaSerializer,ProveedorSerializer,ClientesSerializer,VentaSerializer,CreditoSerializer,ProductosSerializer,UsuariosSerializer
 
-""" #Personas
-class PersonaList(generics.ListCreateAPIView):
-    queryset = Usuarios.objects.all()
-    serializer_class = PersonaSerializer
-   # permission_classes = (IsAuthenticated,)
-    #authentication_class = (TokenAuthentication,)
+  
 
 #Login
-class Login(FormView):
+class LoginView(APIView):
     
-    form_class = AuthenticationForm
-    success_url = reverse_lazy('api:persona_list')
+    def post(self, request):
+        try:
+            username = Usuarios.objects.get(username=request.username)
+            password = Usuarios.objects.get(password=request.password) 
 
-    @method_decorator(csrf_protect)
-    @method_decorator(never_cache)
-    def dispatch(self,request,*args,**kwargs):
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return super(Login,self).dispatch(request,*args,*kwargs)
-        
-    def form_valid(self,form):
-        user = authenticate(username = form.cleaned_data['username'], password = form.cleaned_data['password'])
-        token = Token.objects.get_or_create(user=user)
-        if token:
-            login(self.request, form.get_user())
-            return super(Login,self).form_valid(form)
-
- """
-class Logout(APIView):
-    def get(self,request,format=None):
-        request.user.auth_token.delete()
-        logout(request)
-        return Response(status= status.HTTP_200_OK)
+        except Usuarios.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+class RegistroUserView(generics.CreateAPIView):
+    queryset = Usuarios.objects.all()
+    serializer_class = UsuariosSerializer
+
+
+
+ #Usuarios
+class UsuariosView(APIView):
+    def get(self, request, format=None):
+        if request.method == 'GET':
+            data = []
+            nextPage = 1
+            previousPage = 1
+            usuarios_list = Usuarios.objects.all()
+            page = request.GET.get('page',1)
+            paginator = Paginator(usuarios_list,5)
+            try:
+                data = paginator.page(page)
+            except PageNotAnInteger:
+                data = paginator.page(1)
+            except EmptyPage:
+                data = paginator.page(paginator.num_pages)
+                
+            serializer = UsuariosSerializer(data,context={'request': request} ,many=True)
+            if data.has_next():
+                nextPage = data.next_page_number()
+            if data.has_previous():
+                previousPage = data.previous_page_number()
+                
+            return Response({'data': serializer.data , 'count': paginator.count, 'numpages' : paginator.num_pages, 'nextlink': '/api/usuarios/?page=' + str(nextPage), 'prevlink': '/api/usuarios/?page=' + str(previousPage)})
+
+
+class UsuariosDetail(APIView):
+#GET - Saber de un usuario
+    def get(self,request, pk):
+        try:
+            usuario = Usuarios.objects.get(pk=pk)
+        except Usuarios.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if request.method == 'GET':
+            serializer = UsuariosSerializer(usuario, context={'request': request})
+            return Response(serializer.data)
+
+#PUT - Edita un usuario
+    def put(self,request,pk):
+        try:
+            usuario = Usuarios.objects.get(pk=pk)
+        except Usuarios.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if request.method == 'PUT':
+            serializer = UsuariosSerializer(usuario, data=request.data,context={'request':request})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#DELETE - Elimina un usuario
+    def delete(self,request,pk): 
+        try:
+            usuario = Usuarios.objects.get(pk=pk)
+        except Usuarios.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if request.method == 'DELETE':
+            usuario.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+ 
 
 class ProductosView(APIView):
     #Api productos

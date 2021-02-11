@@ -9,6 +9,9 @@ from api import views
 
 
 urlpatterns = [
+    path('registro/', views.RegistroUserView.as_view()),
+    path('usuarios/', views.UsuariosView.as_view()),
+    path('usuariosDetail/<int:pk>',views.UsuariosDetail.as_view()),    
     path('productos/', views.ProductosView.as_view()),
     path('productosDetail/<int:pk>', views.ProductosDetail.as_view()),
     path('productosCompra/', views.ProductosCompra.as_view(), name='Compra'),

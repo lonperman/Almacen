@@ -1,10 +1,17 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+#Manager Models
+from api.managers import ProveedorManager
 
 #Usuarios
 class Usuarios(models.Model):
     id_persona = models.AutoField(primary_key= True)
-    nombre_persona = models.CharField('Nombre', max_length=100)
-    password_persona = models.CharField(max_length=10)
+    username = models.OneToOneField(User,on_delete=models.CASCADE)
+    email = models.EmailField()
+    nombre_persona = models.CharField('Nombre', max_length=100)   
+    password = models.CharField(max_length=10)
+    password2 = models.CharField(max_length=10)
 
     LOAN_STATUS = (
         ('A','admin'),
@@ -47,7 +54,7 @@ class Proveedor(models.Model):
     precio_producto = models.IntegerField() 
     createdAt = models.DateTimeField(auto_now_add=True)
 
-
+    objects = ProveedorManager()
     
     class Meta:
         ordering = ["id_proveedor"]
