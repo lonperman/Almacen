@@ -12,13 +12,7 @@ class Usuarios(models.Model):
     nombre_persona = models.CharField('Nombre', max_length=100)   
     password = models.CharField(max_length=10)
     password2 = models.CharField(max_length=10)
-
-    LOAN_STATUS = (
-        ('A','admin'),
-        ('O','operador')
-    )
-
-    rol_usuario =  models.CharField(max_length=100,choices=LOAN_STATUS,blank=True, default='O')
+    rol_usuario = models.CharField(max_length=100)
     createdAt = models.DateTimeField(auto_now_add=True)
 
 
@@ -69,15 +63,9 @@ class Productos(models.Model):
     #Crear el modelo para los productos
     id_producto = models.AutoField(primary_key=True)
     nombre_producto = models.CharField(max_length=100)
-    LOAN_STATUS = (
-        ('C','Compra'),
-        ('V','Venta'),
-        ('P','Pendiente'),
-    )
-
     codigo =  models.ForeignKey(Categoria,on_delete=models.CASCADE)
     id_proveedor = models.ForeignKey(Proveedor,on_delete=models.CASCADE)
-    estado_producto = models.CharField(max_length=100,choices=LOAN_STATUS,blank=True, default='C')
+    estado_producto = models.CharField(max_length=100)
     cantidad_producto = models.IntegerField()
     precio_producto = models.IntegerField()
     imagen_producto = models.ImageField()
@@ -97,13 +85,7 @@ class Cliente(models.Model):
     id_cliente = models.AutoField(primary_key=True)
     nombre_cliente = models.CharField(max_length=100,null=False)
     cedula_cliente = models.CharField(unique=True,max_length=100,null=False)
-
-    LOAN_STATUS = (
-        ('N','Nuevo'),
-        ('A','Antiguo'),
-    )
-
-    estado_cliente =  models.CharField(max_length=100,choices=LOAN_STATUS,blank=True, default='N')
+    estado_cliente =  models.CharField(max_length=100)
     telefono_cliente = models.CharField(max_length=10)
     createdAt = models.DateTimeField(auto_now_add=True)
 
