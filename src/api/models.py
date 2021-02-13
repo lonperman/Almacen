@@ -6,13 +6,19 @@ from api.managers import ProveedorManager
 
 #Usuarios
 class Usuarios(models.Model):
+
+    Status=((('A','Admin')),(('O','Operador')),)
+
     id_persona = models.AutoField(primary_key= True)
     username = models.OneToOneField(User,on_delete=models.CASCADE)
     email = models.EmailField()
     nombre_persona = models.CharField('Nombre', max_length=100)   
     password = models.CharField(max_length=10)
     password2 = models.CharField(max_length=10)
-    rol_usuario = models.CharField(max_length=100)
+    rol_usuario = models.CharField(
+
+        max_length=32,choices=Status,default='available',
+    )
     createdAt = models.DateTimeField(auto_now_add=True)
 
 
@@ -25,15 +31,15 @@ class Usuarios(models.Model):
 
 #Categoria
 class Categoria(models.Model):
-    id_categoria = models.CharField(max_length=10)
-    nombre_categoria = models.CharField(max_length=10)
+    id_categoria = models.CharField(max_length=20)
+    nombre_categoria = models.CharField(max_length=20)
     codigo_categoria = models.CharField(primary_key=True,max_length=10)
     createdAt = models.DateTimeField(auto_now_add=True)
 
 
 
     class Meta:
-        ordering = ["nombre_categoria"]
+        ordering = ["codigo_categoria"]
 
     #Metodos
     def __str__(self):
@@ -61,14 +67,19 @@ class Proveedor(models.Model):
 #Producto
 class Productos(models.Model):
     #Crear el modelo para los productos
+    Status=((('Compra','Compra Producto')),(('Venta','Venta Producto')),(('Pendiente',' Pendiente Producto')),)
+
     id_producto = models.AutoField(primary_key=True)
     nombre_producto = models.CharField(max_length=100)
     codigo =  models.ForeignKey(Categoria,on_delete=models.CASCADE)
     id_proveedor = models.ForeignKey(Proveedor,on_delete=models.CASCADE)
-    estado_producto = models.CharField(max_length=100)
+    estado_producto = models.CharField(
+
+        max_length=32,choices=Status,default='available',
+    )
     cantidad_producto = models.IntegerField()
     precio_producto = models.IntegerField()
-    imagen_producto = models.ImageField()
+    imagen_producto = models.URLField(max_length=400)
     createdAt = models.DateTimeField(auto_now_add=True)
 
     #Metada
@@ -82,12 +93,19 @@ class Productos(models.Model):
 
 #Cliente
 class Cliente(models.Model):
+
+    Status=((('Nuevo','Cliente Nuevo')),(('Antiguo','CLiente Antiguo')),)
+
     id_cliente = models.AutoField(primary_key=True)
     nombre_cliente = models.CharField(max_length=100,null=False)
     cedula_cliente = models.CharField(unique=True,max_length=100,null=False)
-    estado_cliente =  models.CharField(max_length=100)
+    estado_cliente =  models.CharField(
+
+        max_length=32,choices=Status,default='available',
+    )
     telefono_cliente = models.CharField(max_length=10)
     createdAt = models.DateTimeField(auto_now_add=True)
+
 
  #Metada
     class Meta:

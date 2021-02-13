@@ -1,51 +1,75 @@
 {% extends "padre.html" %}
 
-{% load static %}
-
-{% block title %}
-
-<title>Cacharrerias Don Andres</title>
-
-{% endblock %}
+ {% load static %}
 
 
-{% block content%}
+ {% block title %}
 
-<!-- Heading -->
-   <section class="page-section clearfix">
-    <div class="container">
-      <div class="intro">
-        <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'img/productos.jpg' %}" alt="">
-        <div class="intro-text left-0 text-center bg-faded p-5 rounded">
-          <h2 class="section-heading mb-4" >
-            <span class="section-heading-upper">Puntualidad</span>
-            <span class="section-heading-lower">El mejor stock</span>
-          </h2>
-          <p class="mb-3">En la puertra de tu casa en menos de 48 h con el envío normal. En menos de 24 h con el envío express.
-          </p>
-         
-        </div>
-      </div>
-    </div>
-  </section>
+ {% endblock %}
 
 
-  
-    <!-- Message -->
-    <section class="page-section cta">
-      <div class="container">
-        <div class="row">
-          <div class="col-xl-9 mx-auto">
-            <div class="cta-inner text-center rounded">
-              <h2 class="section-heading mb-4">
-                <span class="section-heading-upper">Compromiso total</span>
-                <span class="section-heading-lower">Garantizado</span>
-              </h2>
-              <p class="mb-0">Con más de 75 años de experiencia a nuestras espaldas, desde Gestión de Pedidos tenemos los conocimientos y herramientas necesarios para llevar cualquier objeto a la puerta de su casa con puntualidad y profesionalidad.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+ {% block content%}
 
+
+<div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
+    <!--=================== filter portfolio start====================-->
+ <div class="portfolio gutters grid img-container align-content-center" >
+              
+        <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
+            <div>
+                <div class="img_card">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-7 content_section">
+                            <div class="content_box">
+                                <div class="content_box_inner">
+                                    <div>                                       
+                                      <h3>Bienvenido a Cacharrerias</h3><h3 style="color: crimson;"> Andres</h3>
+                                        <p>
+                                            CACHARRERIAS ANDRES es una organización formada con el objeto de distribuir toda clase de productos de
+                                             cacharrería de alta calidad, que con lleven a satisfacer las necesidades y expectativas de todos nuestros
+                                              clientes, mediante procesos administrativos eficientes y un talento humano calificado, capacitado, responsable, 
+                                              comprometido, y mejorando permanentemente los estándares del servicio; con el único fin de lograr un mejor nivel de
+                                               vida de todos nuestros clientes y a su vez de nuestro equipo de trabajo.  
+                                              </p>
+                                        <!--=================== counter start====================-->
+                                        
+                                        
+                                        
+                                        <div class="pt50">
+                                            <div class="row justify-content-center">
+                                                <div class="col-12 col-md-4">
+                                                    <div class="counter_box">
+                                                        <div class="divider"></div>
+                                        
+                                        
+                                                        <span class="counter">{{productos|length}}</span>
+                                        
+                                                        <h5>Productos Totales</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-4">
+                                                    <div class="counter_box">
+                                                        <div class="divider"></div>
+                                                      
+                                                        <span class="counter">{{clientes|length}}</span>
+                                                      
+                                                        <h5>clientes</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-4">
+                                                    <div class="counter_box">
+                                                        <div class="divider"></div>
+                                                       
+                                                        <span class="counter">{{ventas|length}}</span>
+            
+                                                        
+                                                        <h5>Ventas</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    
+                                    </div>
+</div>
 {% endblock %}

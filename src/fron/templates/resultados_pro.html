@@ -7,30 +7,57 @@
 {% endblock %}
 
 {% block content %}
- <br>
-<p style="color: white;">Estas Buscando : <strong>{{query}}</strong></p>    
 
-{% if articulos %}
+<div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
+  <!--=================== filter portfolio start====================-->
+<div class="portfolio gutters grid img-container align-content-center" >
+ 
+  <p style="color:black;">Estas Buscando : <strong>{{query}}</strong></p>    
+
+ {% if articulos %}
 
    <p style="color: white;">Articulos Encontrados : {{articulos|length}} articulos </p> 
   
    <ul>
 
+    <div class="col-12">
+    
+      <div class="portfolio gutters grid img-container">
+    
      {% for articulos in articulos%}
 
-     <li style="color: white;">
+     <br>
+     <br>
+      <div class="grid-item branding col-sm-12 col-md-6 col-lg-3">
 
-       <strong>{{articulos.nombre_producto}}&nbsp;{{articulos.precio_producto}}&nbsp;{{articulos.codigo}}&nbsp;{{articulos.cantidad_producto}}</strong>
-
-     </li>
-
-     {% endfor %}
-   </ul>
-
-{% else %}
+        <div class="grid-sizer col-sm-12 col-md-6 col-lg-3"></div>
    
-<P style="color: white;">No Existe el Articulo </P>
+          <a href="{{articulos.imagen_producto.url}}" title="<strong style=color:coral >{{articulos.nombre_producto}}</strong><br><br>$ {{articulos.precio_producto}}
+            <br><br>Cantidad: {{articulos.cantidad_producto}}<br><br>Categoria: {{articulos.codigo}}">
+              <div class="project_box_one">
+                <img src="{{articulos.imagen_producto.url}}" alt="pro1" />
+                  <div class="product_info">
+                      <div class="product_info_text">              
+                          <div class="product_info_text_inner">
+                              <i class="ion ion-plus"></i>
+                              <h3 style="color: cornsilk;">{{articulos.nombre_producto}}</h3>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </a>
+      {% endfor %}
+    </div>
+   </ul>
+  </div>
+    
+ {% else %}
+   
+  <P style="color: white;">No Existe el Articulo </P>
 
-{% endif %}
+ {% endif %}
+</div>
+</div>
+</div>
 
 {% endblock %}

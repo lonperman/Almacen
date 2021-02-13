@@ -1,101 +1,138 @@
 <html>
 
 <head>
+
   {% load static %}
 
+    <!-- ========== Title ========== -->
 
-  {% block title %}
+    {% block title %}
 
-  <title>Bienvenido Cacharrerias Don Andres</title>
+    <title> Cocoon -Portfolio</title>
 
-  {% endblock %}
- 
-    <!-- Bootstrap -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
-     <!-- Fonts -->
-    
-     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet"> 
-     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
-     
-
-    <!-- Styles -->
-    <link href="{% static 'css/gestion.css' %}" rel="stylesheet">
+    {% endblock %}
+  
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/magnific-popup.css' %}" rel="stylesheet">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
 </head>
 
 <body>
+<div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
+</div>
 
-    <h1 class="site-heading text-center text-white d-none d-lg-block">
-      
-        <span class="site-heading-lower">Cacharrerias 4NDR3S</span>
-      </h1>
+<div class="body-container container-fluid">
+    <a class="menu-btn" href="javascript:void(0)">
+        <i class="ion ion-grid"></i>
+    </a>
+    <div class="row justify-content-center">
+        <!--=================== side menu ====================-->
+        <div class="col-lg-2 col-md-3 col-12 menu_block">
+
+            <!--logo -->
+            <div class="logo_box">
+                <a href="#">
+                    <img src="{% static 'img/bg/logo.png' %}" alt="cocoon">
+                </a>
+            </div>
+            <!--logo end-->
+
+            <!--main menu -->
+            <div class="side_menu_section">
+                <ul class="menu_nav">
+                    <li class="{% if request.path == '/' %}active{% endif %}">
+                        <a href="{% url 'Home' %}">
+                            Home
+                        </a>
+                    </li>
+                    <li class="{% if request.path == '/usuario' %}active{% endif %}">
+                        <a href="{% url 'Usuario' %}">
+                            Usuarios
+                        </a>
+                    </li>
+                    <li class="{% if request.path == '/Producto' %}active{% endif %}">
+                        <a href="{% url 'Producto' %}">
+                            Productos
+                        </a>
+                    </li>
+                    <li class="{% if request.path == '/cliente' %}active{% endif %}">
+                        <a href="{% url 'Cliente' %}">
+                            Clientes
+                        </a>
+                    </li>
+                    <li class="{% if request.path == '/venta' %}active{% endif %} ">
+                        <a href="{% url 'Venta' %}">
+                            Ventas
+                        </a>
+                    </li>
+                    <li class="{% if request.path == '/proveedor' %}active{% endif %} ">
+                        <a href="{% url 'Proveedor' %}">
+                            Proveedores
+                        </a>
+                    </li>
+                    <li class="{% if request.path == '/categoria' %}active{% endif %} ">
+                        <a href="{% url 'Categoria' %}">
+                            Categorias
+                        </a>
+                    </li>
+                 </ul>
+            </div>
+            <!--main menu end -->
+
+            <!--filter menu -->
+            <div class="side_menu_section">
+                <h4 class="side_title">filter by:</h4>
+                <ul  id="filtr-container"  class="filter_nav">
+                    <li  data-filter="*" class="active"><a href="javascript:void(0)" >all</a></li>
+                    <li data-filter=".branding"> <a href="javascript:void(0)">branding</a></li>
+                    <li data-filter=".design"><a href="javascript:void(0)">design</a></li>
+                    <li data-filter=".photography"><a href="javascript:void(0)">photography</a></li>
+                    <li data-filter=".architecture"><a href="javascript:void(0)">architecture</a></li>
+                </ul>
+            </div>
+            <!--filter menu end -->
+
+        </div>
 
 
- <!-- Navbar -->
- <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="{% url 'Home' %}">Gestión de Pedidos</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item {% if request.path == '/' %}active{% endif %} px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="{% url 'Home' %}">Inicio</a>
-          </li>
-          <li class="nav-item {% if request.path == '/login' %}active{% endif %}px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="{% url 'Login' %}">Login</a>
-          </li>
-          <li class="nav-item {% if request.path == '/producto' %}active{% endif %} px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="{% url 'Producto' %}">Productos</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!--Contenido -->
-  {% block content%}
+        {% block content%}
      
-  {% endblock %}
+        {% endblock %}
+      
+        <!--=================== content body ====================-->
 
-    <!-- Footer -->
-    <footer class="footer text-faded text-center py-5">
-      <div class="container">
-        <p class="m-0">
-	        <a href="#" class="link">
-	          <span class="fa-stack fa-lg">
-	            <i class="fa fa-circle fa-stack-2x"></i>
-	            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-	          </span>
-	        </a>
-	        <a href="#" class="link">
-	          <span class="fa-stack fa-lg">
-	            <i class="fa fa-circle fa-stack-2x"></i>
-	            <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-	          </span>
-	        </a>
-	        <a href="#" class="link">
-	          <span class="fa-stack fa-lg">
-	            <i class="fa fa-circle fa-stack-2x"></i>
-	            <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
-	          </span>
-	        </a>
-	    </p>
-        <p class="m-0 mbt">
-        	<a href="sample.html" class="link">Política de privacidad</a> ·
-        	<a href="sample.html" class="link">Aviso legal</a> ·
-        	<a href="sample.html" class="link">Cookies</a>
-		</p>
-        <p class="m-0 mbt1">&copy; Cacharrerias 4NDR3S 2020</p>
-      </div>
-	</footer>
+        <!--=================== content body end ====================-->
+    </div>
+</div>
 
-    <!-- Bootstrap -->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+<!-- jquery -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<!-- bootstrap -->
+<script src="{% static 'js/popper.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<!--Portfolio Filter-->
+<script src="{% static 'js/imgloaded.js' %}"></script>
+<script src="{% static 'js/isotope.js' %}"></script>
+<!-- Magnific-popup -->
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<!--Counter-->
+<script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+<!-- WOW JS -->
+<script src="{% static 'js/wow.min.js' %}"></script>
+<!-- Custom js -->
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/slick.min.js' %}"></script>
+<script src="{% static 'js/waypoints.min.js' %}"></script>
+
+
+
 
 </body>
-
-
 </html>
+

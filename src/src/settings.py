@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+<<<<<<< HEAD
 
+=======
+import os
+>>>>>>> 0a0dda2bb4782576ddaceb2b80a6a58d685f492d
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -143,3 +147,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+<<<<<<< HEAD
+=======
+
+MEDIA_URL = '/producto_imagen/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'producto_imagen')
+>>>>>>> 0a0dda2bb4782576ddaceb2b80a6a58d685f492d
